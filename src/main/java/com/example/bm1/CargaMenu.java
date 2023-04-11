@@ -1,7 +1,8 @@
 package com.example.bm1;
 
-import jssc.SerialPort;
-
+//import org.firmata4j.FirmataDevice;
+//import org.firmata4j.SerialException;
+//import org .firmata4j.firmata.FirmataSysexMessage;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,16 +18,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CargaMenu extends Application {
-
+    Lista list_general = new Lista();
+    Lista list_segura = new Lista();
+    Lista list_incert = new Lista();
     @Override
-    public void start(Stage primarystage) throws IOException {
+    public void start(Stage primarystage) throws IOException, InterruptedException {
 
-        SerialPort serialPort = new SerialPort("COM3");
 
         Button btn1 = new Button("Abrir ventana 1");
         Button btn2 = new Button("Abrir ventana 2");
@@ -42,10 +41,10 @@ public class CargaMenu extends Application {
 
                 root.setHgap(5);
                 root.setVgap(5);
+                // Crear la escena para la ventana 2
+                Scene scene2 = new Scene(root, 596, 596);
                 // Crear una nueva instancia de Stage
                 Stage ventana2 = new Stage();
-                // Crear la escena para la ventana 2
-                Scene scene2 = new Scene(new VBox(), 596, 596);
                 // Establecer la escena en la ventana 2
                 ventana2.setScene(scene2);
                 // Mostrar la ventana 2
@@ -64,11 +63,11 @@ public class CargaMenu extends Application {
                 //tableroBuscaminas.inicializarCasillas();
                 Button[][] Mbotones = new Button[8][8];
                 tableroBuscaminas.inicializarCasillas();
-                Random rand = new Random();
+                //Random rand = new Random();
                 Random Rand = new Random();
-                AtomicBoolean turno = new AtomicBoolean(false);
-                turno.set(true);//rand.nextBoolean();
-                System.out.println(turno.get());
+                int turno = 0;
+                //turno.set(true);//rand.nextBoolean();
+                System.out.println(turno);
 
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
@@ -88,30 +87,27 @@ public class CargaMenu extends Application {
 
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
-                        final int fila = i;
-                        final int columna = j;
+                        //final int fila = i;
+                        //final int columna = j;
                         Image bandera = new Image("file:///Users/jbc/Documents/U/III SEMESTRE U/DATOS I/LogicaProyecto1/BM1/src/main/resources/com/example/bm1/bandera.png");
 
                         ImageView imagen = new ImageView(bandera);
-                        // Asigna el ImageView a cada botón
-
+                        Mbotones[i][j].setGraphic(imagen);
+                        Mbotones[i][j].getGraphic().setVisible(false);
                         imagen.setFitHeight(60);
                         imagen.setFitWidth(20);
+                        /*
+                        Lista list_general = new Lista();
+                        Lista list_segura = new Lista();
+                        Lista list_incert = new Lista();
 
-                        //Mbotones[i][j].setGraphic(imagen);
-                        //Button boton = Mbotones[i][j];
+                        */
 
-                        // Asigna el ImageView a cada botón
-                        //boton.setGraphic(null);
-
-                        // Crea una variable para mantener el estado de la imagen en el botón
-                        //Turnos(Mbotones, tableroBuscaminas, turno.get(), imagen, Rand);
+                        Turnos2(Mbotones, tableroBuscaminas, turno, imagen, Rand);//, list_general, list_segura, list_incert);
                     }
                 }
+
             }
-
-
-
 
         });
 
@@ -181,13 +177,7 @@ public class CargaMenu extends Application {
                         Mbotones[i][j].getGraphic().setVisible(false);
                         imagen.setFitHeight(60);
                         imagen.setFitWidth(20);
-                        //Mbotones[i][j].setGraphic(null);
 
-                        //Mbotones[i][j].setGraphic(imagen);
-                        //Button boton = Mbotones[i][j];
-
-                        // Asigna el ImageView a cada botón
-                        //boton.setGraphic(null);
 
                         // Crea una variable para mantener el estado de la imagen en el botón
                         Turnos(Mbotones, tableroBuscaminas, turno, imagen, Rand);
@@ -196,66 +186,7 @@ public class CargaMenu extends Application {
 
             }
 
-            /*
-            public static void TurnosM (Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, Boolean turno, ImageView imagen, Random Rand) {
-                    String mensaje;
-                    int valorAleatorio1 = Rand.nextInt(8); // Genera un número entre 0 y 7 (ambos inclusive)
-                    int valorAleatorio2 = Rand.nextInt(8); // Genera un número entre 0 y 7 (ambos inclusive)
-                    while (tableroBuscaminas.casillas[valorAleatorio1][valorAleatorio2].isAbierta()) {
-                        Rand = new Random();
-                        valorAleatorio1 = Rand.nextInt(8);
-                        valorAleatorio2 = Rand.nextInt(8);
-                        }
 
-                    int ColumnaA = GridPane.getRowIndex(Mbotones[valorAleatorio1][valorAleatorio2]);
-                    int FilaA = GridPane.getColumnIndex(Mbotones[valorAleatorio1][valorAleatorio2]);
-
-                    if (tableroBuscaminas.casillas[valorAleatorio1][valorAleatorio2].isMina()) {
-                            Mbotones[valorAleatorio1][valorAleatorio2].setDisable(true);
-                            Mbotones[valorAleatorio1][valorAleatorio2].setGraphic(null);
-                            Mbotones[valorAleatorio1][valorAleatorio2].setText("X");
-                            for (int k = 0; k < 8; k++) {
-                                for (int l = 0; l < 8; l++) {
-                                    Mbotones[k][l].setDisable(true);
-                                }
-                            }
-                            mensaje = "   FELICIDADES!!! GANASTE!  ";
-                            mostrarMensaje(mensaje);//System.out.println("MAMO_PINGA");
-                        } else {
-                            tableroBuscaminas.casillas[FilaA][ColumnaA].setAbierta();
-                            //Mbotones[valorAleatorio1][valorAleatorio2].setStyle("CB3234");
-                            //Mbotones[valorAleatorio1][valorAleatorio2].setText("X");
-                            Mbotones[FilaA][ColumnaA].setDisable(true);
-                            tableroBuscaminas.generarNumAdy();
-                            if (tableroBuscaminas.casillas[FilaA][ColumnaA].getNumMinasAlrededor() != 0) {
-                                tableroBuscaminas.casillas[FilaA][ColumnaA].setText(tableroBuscaminas.casillas[FilaA][ColumnaA].getNumMinasAlrededor() + "");
-                                System.out.println("si entra al primero");
-                                tableroBuscaminas.revelarCeldasSinPistas(FilaA, ColumnaA);
-                                Turnos(Mbotones, tableroBuscaminas, true, imagen, Rand);
-                            }else{
-                                System.out.println("si entra");
-                                tableroBuscaminas.revelarCeldasSinPistas(FilaA, ColumnaA);
-                                Turnos(Mbotones, tableroBuscaminas, true, imagen, Rand);
-                            }
-                    }
-
-                }
-
-             */
-
-
-            /*
-                // Crear la escena para la ventana 1
-                Scene scene1 = new Scene(root, 596, 596);
-                // Crear una nueva instancia de Stage
-                Stage ventana1 = new Stage();
-                // Establecer la escena en la ventana 1
-                ventana1.setScene(scene1);
-                // Mostrar la ventana 1
-                ventana1.show();
-                primarystage.close();
-
-             */
     });
 
 
@@ -307,6 +238,18 @@ public class CargaMenu extends Application {
         }
     }
 
+    public void Turnos2(Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, ImageView imagen, Random Rand){//, Lista list_general, Lista list_segura, Lista list_incert) {
+        if (turno%2 == 0){
+            //TurnosMv2(Mbotones, tableroBuscaminas, turno, imagen, Rand, list_general, list_segura, list_incert);
+            TurnosJv2(Mbotones, tableroBuscaminas, turno, imagen, Rand);//, list_general, list_segura, list_incert);
+        }
+        else {
+            TurnosMv2(Mbotones, tableroBuscaminas, turno, imagen, Rand);//, list_general, list_segura, list_incert);
+            //TurnosJv2(Mbotones, tableroBuscaminas, turno, imagen, Rand, list_general, list_segura, list_incert);
+
+        }
+    }
+
 
     public static void mostrarMensaje(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -318,7 +261,138 @@ public class CargaMenu extends Application {
     }
 
 
+    public void CasillasSeguras(/*Lista list_segura,*/ TableroBuscaminas tableroBuscaminas){
+        //list_segura.eliminarTodos();
+
+
+        for (int i = 0; i < this.list_general.getTamaño(); i++) {
+            if (!tableroBuscaminas.casillas[this.list_general.buscarAleatorio().getI()][this.list_general.buscarAleatorio().getJ()].isMina()){
+                 list_segura.agregar(this.list_general.buscarAleatorio());
+             }
+        }
+        System.out.println(list_segura);
+    }
+
+    public void CasillasIncert(/*Lista list_incert,*/ TableroBuscaminas tableroBuscaminas){
+        //list_incert.eliminarTodos();
+
+        for (int i = 0; i < this.list_general.getTamaño(); i++) {
+            if (tableroBuscaminas.casillas[this.list_general.buscarAleatorio().getI()][this.list_general.buscarAleatorio().getJ()].isMina()){
+                list_incert.agregar(this.list_general.buscarAleatorio());
+            }
+        }
+        System.out.println(list_incert);
+    }
+
+    public void CasillasTotales(TableroBuscaminas tableroBuscaminas){
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (!tableroBuscaminas.casillas[i][j].isAbierta()){
+                    Node node = new Node(i, j);
+                    list_general.agregar(node);
+                }
+            }
+        }
+    }
+
+    public void TurnosMv2 (Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, ImageView imagen, Random Rand){
+        CasillasTotales(tableroBuscaminas);
+       CasillasSeguras(tableroBuscaminas);
+        //System.out.println(lista_segura);
+        CasillasIncert(/*list_incert,*/ tableroBuscaminas);
+        ///System.out.println(lista_incert);
+        if(this.list_segura.getTamaño()==0 || tableroBuscaminas.casillas[this.list_incert.buscarAleatorio().getI()][this.list_incert.buscarAleatorio().getJ()].isAbierta() ){
+            if (tableroBuscaminas.casillas[this.list_incert.buscarAleatorio().getI()][this.list_incert.buscarAleatorio().getJ()].isMina()) {
+                String mensaje;
+                Mbotones[this.list_incert.buscarAleatorio().getI()][this.list_incert.buscarAleatorio().getJ()].setDisable(true);
+                Mbotones[this.list_incert.buscarAleatorio().getI()][this.list_incert.buscarAleatorio().getJ()].setGraphic(null);
+                Mbotones[this.list_incert.buscarAleatorio().getI()][this.list_incert.buscarAleatorio().getJ()].setText("X");
+                for (int k = 0; k < 8; k++) {
+                    for (int l = 0; l < 8; l++) {
+                        Mbotones[k][l].setDisable(true);
+                    }
+                }
+                mensaje = "   FELICIDADES!!! GANASTE!  ";
+                mostrarMensaje(mensaje);//System.out.println("MAMO_PINGA");
+            }
+        }else {
+            tableroBuscaminas.casillas[this.list_segura.buscarAleatorio().getI()][this.list_segura.buscarAleatorio().getJ()].setAbierta();
+            //Mbotones[valorAleatorio1][valorAleatorio2].setStyle("CB3234");
+            //Mbotones[valorAleatorio1][valorAleatorio2].setText("X");
+            Mbotones[this.list_segura.buscarAleatorio().getI()][this.list_incert.buscarAleatorio().getI()].setDisable(true);
+            tableroBuscaminas.generarNumAdy();
+            if (tableroBuscaminas.casillas[this.list_segura.buscarAleatorio().getI()][this.list_segura.buscarAleatorio().getJ()].getNumMinasAlrededor() != 0) {
+                tableroBuscaminas.casillas[this.list_segura.buscarAleatorio().getI()][this.list_segura.buscarAleatorio().getJ()].setText(tableroBuscaminas.casillas[this.list_segura.buscarAleatorio().getI()][this.list_segura.buscarAleatorio().getJ()].getNumMinasAlrededor() + "");
+                System.out.println("si entra al primero");
+                tableroBuscaminas.revelarCeldasSinPistas(this.list_segura.buscarAleatorio().getI(), this.list_segura.buscarAleatorio().getJ());
+                //Turnos(Mbotones, tableroBuscaminas, true, imagen, Rand);
+                System.out.println("si entra");
+                //tableroBuscaminas.revelarCeldasSinPistas(FilaA, ColumnaA);
+                //turno ++;
+                //System.out.println(turno);
+                //Turnos(Mbotones, tableroBuscaminas, turno, imagen, Rand);
+            }
+            System.out.println("si sale");
+            turno+=1;
+            System.out.println(turno);
+            Turnos2(Mbotones, tableroBuscaminas, turno+1, imagen, Rand);//, list_general, list_segura, list_incert);
+        }
+    }
+
+    public void TurnosJv2(Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, ImageView imagen, Random Rand){//, Lista list_general, Lista list_segura, Lista list_incert) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                int fila = i;
+                int columna = j;
+                int finalI = i;
+                int finalJ = j;
+                //int finalT = turno;
+                Mbotones[i][j].setOnMouseClicked((MouseEvent event) -> {
+
+                    int Columna = GridPane.getRowIndex(Mbotones[fila][columna]);
+                    int Fila = GridPane.getColumnIndex(Mbotones[fila][columna]);
+                    if (event.getButton() == MouseButton.PRIMARY) {
+                        System.out.println("Hola, se preciono el boton en la posicion " + fila + "" + columna + "");
+                        Mbotones[Fila][Columna].setDisable(true);
+                        if (tableroBuscaminas.casillas[Fila][Columna].isMina()) {
+                            String mensaje;
+                            Mbotones[finalI][finalJ].setGraphic(null);
+                            for (int k = 0; k < 8; k++) {
+                                for (int l = 0; l < 8; l++) {
+                                    Mbotones[k][l].setDisable(true);
+                                }
+                            }
+                            mensaje = "perdiste";
+                            mostrarMensaje(mensaje);
+                            return;
+                        } else {
+                            tableroBuscaminas.generarNumAdy();
+                            if (tableroBuscaminas.casillas[Fila][Columna].getNumMinasAlrededor() != 0) {
+                                tableroBuscaminas.casillas[Fila][Columna].setText(tableroBuscaminas.casillas[Fila][Columna].getNumMinasAlrededor() + "");
+                            }
+                            tableroBuscaminas.revelarCeldasSinPistas(Fila, Columna);
+                            System.out.println(turno + 1);
+                            Turnos2(Mbotones, tableroBuscaminas, turno+1, imagen, Rand);//, list_general, list_segura, list_incert);
+                        }
+                    } else if (event.getButton() == MouseButton.SECONDARY) {
+                        // Realizar acción para clic derecho
+                        if (Mbotones[Fila][Columna].getGraphic().isVisible()){//Mbotones[Fila][Columna].getGraphic() == imagen) {
+                            // Si la imagen está activa, elimina la imagen del ImageView
+                            Mbotones[Fila][Columna].getGraphic().setVisible(false);
+                        } else {
+                            // Si la imagen no está activa, carga la imagen en el ImageView
+                            Mbotones[Fila][Columna].getGraphic().setVisible(true);
+                            //System.out.println("SI");
+                        }
+                    }
+                });
+            }
+        }}
+
+
     public static void TurnosM (Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, ImageView imagen, Random Rand) {
+
         int valorAleatorio1 = Rand.nextInt(8); // Genera un número entre 0 y 7 (ambos inclusive)
         int valorAleatorio2 = Rand.nextInt(8); // Genera un número entre 0 y 7 (ambos inclusive)
         while (tableroBuscaminas.casillas[valorAleatorio1][valorAleatorio2].isAbierta()) {
