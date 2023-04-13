@@ -40,21 +40,26 @@ public class CargaMenu extends Application {
             @Override
             public void handle(ActionEvent e) {
                 // Crea el Grid para los botones del tablero
-                GridPane root = new GridPane();
+                Pane root = new Pane();
+                GridPane gridPane = new GridPane();
 
-                root.setHgap(5);
-                root.setVgap(5);
+                gridPane.setHgap(5);
+                gridPane.setVgap(5);
+                gridPane.setLayoutX(150);
+                gridPane.setLayoutY(150);
+                root.getChildren().add(gridPane);
                 // Crear la escena para la ventana 2
-                Scene scene2 = new Scene(root, 596, 596);
+                Scene scene2 = new Scene(root, 596, 620);
                 // Crear una nueva instancia de Stage
                 Stage ventana2 = new Stage();
                 // Establecer la escena en la ventana 2
                 ventana2.setScene(scene2);
                 // Mostrar la ventana 2
                 ventana2.show();
+                ventana2.setResizable(false);
                 primarystage.close();
 
-                IniciarJuego(root);
+                IniciarJuego(gridPane);
 
             }
 
@@ -123,21 +128,26 @@ public class CargaMenu extends Application {
             public void handle(ActionEvent e) {
 
                 // Crea el Grid para los botones del tablero
-                GridPane root = new GridPane();
+                Pane root = new Pane();
+                GridPane gridPane = new GridPane();
 
-                root.setHgap(5);
-                root.setVgap(5);
+                gridPane.setHgap(5);
+                gridPane.setVgap(5);
+                root.getChildren().add(gridPane);
+                gridPane.setLayoutX(50);
+                gridPane.setLayoutY(70);
                 // Crear la escena para la ventana 1
-                Scene scene1 = new Scene(root, 596, 596);
+                Scene scene1 = new Scene(root, 700, 720);
                 // Crear una nueva instancia de Stage
                 Stage ventana1 = new Stage();
                 // Establecer la escena en la ventana 1
                 ventana1.setScene(scene1);
                 // Mostrar la ventana 1
                 ventana1.show();
+                ventana1.setResizable(false);
                 primarystage.close();
 
-                IniciarJuego(root);
+                IniciarJuego(gridPane);
             }
             public void IniciarJuego(GridPane root){
 
@@ -298,18 +308,18 @@ public class CargaMenu extends Application {
         }
 
          */
+
         for (int i = 0; i < 8; i++){
             for (int j = 0; j < 8; j++) {//this.list_general.getTamaño(); i++) {
-                Node tmp = this.list_general.buscar(i,j);
-                System.out.println(i);
-                System.out.println(j);
+                Node tmp1 = new Node(i,j);
+                System.out.println("Iteración: " + i + ", " + j);
                 if (this.list_general.buscar(i,j)!=null){
-                    System.out.println(tmp.getI());
-                    System.out.println(tmp.getJ());
-                    if (!tableroBuscaminas.casillas[tmp.getI()][tmp.getJ()].isMina() && !tmp.getInListaS()){
-                    list_segura.agregar(tmp);
-                    list_general.eliminar(tmp);
-                    tmp.setInListaS();
+                    System.out.println("tmp.getI(): " + tmp1.getI());
+                    System.out.println("tmp.getJ(): " + tmp1.getJ());
+                    if (!tableroBuscaminas.casillas[tmp1.getI()][tmp1.getJ()].isMina() && !tmp1.getInListaS() && !tmp1.getInListaI()){
+                    list_segura.agregar(tmp1);
+                    list_general.eliminar(tmp1);
+                    tmp1.setInListaS();
                     }
                 }
             }
@@ -341,18 +351,21 @@ public class CargaMenu extends Application {
 
         */
         //System.out.println(this.list_general.getTamaño());
+
         for (int i = 0; i < 8; i++){
             for (int j = 0; j < 8; j++) {//this.list_general.getTamaño(); i++) {
-                System.out.println(i);
-                System.out.println(j);
-                Node tmp = this.list_general.buscar(i,j);
+                Node tmp1 = new Node(i,j);
+                //Node tmp = tmp1;
+                System.out.println("Iteración: " + i + ", " + j);
                 if (this.list_general.buscar(i,j)!=null){
-                    System.out.println(tmp.getI());
-                    System.out.println(tmp.getJ());
-                    if (tableroBuscaminas.casillas[tmp.getI()][tmp.getJ()].isMina() && !tmp.getInListaI()) {
-                        list_incert.agregar(tmp);
-                        tmp.setInListaI();
-                        list_general.eliminar(tmp);
+                    System.out.println("tmp.getI(): " + tmp1.getI());
+                    System.out.println("tmp.getJ(): " + tmp1.getJ());
+                    System.out.println(tmp1.getI());
+                    System.out.println(tmp1.getJ());
+                    if (tableroBuscaminas.casillas[tmp1.getI()][tmp1.getJ()].isMina() && !tmp1.getInListaI() && !tmp1.getInListaS()) {
+                        list_incert.agregar(tmp1);
+                        tmp1.setInListaI();
+                        list_general.eliminar(tmp1);
                     }
                 }
             }
