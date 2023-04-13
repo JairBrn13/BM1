@@ -3,18 +3,22 @@ package com.example.bm1;
 //import org.firmata4j.FirmataDevice;
 //import org.firmata4j.SerialException;
 //import org .firmata4j.firmata.FirmataSysexMessage;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Random;
@@ -23,6 +27,8 @@ public class CargaMenu extends Application {
     Lista list_general = new Lista();
     Lista list_segura = new Lista();
     Lista list_incert = new Lista();
+    int segundos = 0;
+
 
 
     //Node node = new Node(0,0);
@@ -42,14 +48,24 @@ public class CargaMenu extends Application {
                 // Crea el Grid para los botones del tablero
                 Pane root = new Pane();
                 GridPane gridPane = new GridPane();
-
+                Label timer = new Label("0 segundos");
+                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+                    segundos++;
+                    timer.setText(segundos + " segundos");
+                }));
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.play();
+                timer.setLayoutX(330);
+                timer.setLayoutY(15);
+                timer.setStyle("");
                 gridPane.setHgap(5);
                 gridPane.setVgap(5);
                 gridPane.setLayoutX(150);
                 gridPane.setLayoutY(150);
                 root.getChildren().add(gridPane);
+                root.getChildren().add(timer);
                 // Crear la escena para la ventana 2
-                Scene scene2 = new Scene(root, 596, 620);
+                Scene scene2 = new Scene(root, 700, 720);
                 // Crear una nueva instancia de Stage
                 Stage ventana2 = new Stage();
                 // Establecer la escena en la ventana 2
@@ -136,6 +152,17 @@ public class CargaMenu extends Application {
                 root.getChildren().add(gridPane);
                 gridPane.setLayoutX(50);
                 gridPane.setLayoutY(70);
+                Label timer = new Label("0 segundos");
+                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+                    segundos++;
+                    timer.setText(segundos + " segundos");
+                }));
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.play();
+                timer.setLayoutX(330);
+                timer.setLayoutY(15);
+                timer.setStyle("");
+                root.getChildren().add(timer);
                 // Crear la escena para la ventana 1
                 Scene scene1 = new Scene(root, 700, 720);
                 // Crear una nueva instancia de Stage
