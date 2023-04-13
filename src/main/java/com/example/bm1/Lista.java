@@ -1,4 +1,7 @@
 package com.example.bm1;
+
+import java.util.Random;
+
 public class Lista {
     //tamaño de la lista
     private int tamaño;
@@ -14,6 +17,7 @@ public class Lista {
         this.tamaño=0;
         //nodo inicial nulo
         this.head=null;
+
     }
 
     /**
@@ -32,16 +36,19 @@ public class Lista {
      * Metodo que permite agregar un nodo al final de la lista enlazada
      * @param nodo, nodo a agregar a la lista
      */
+
+
     public void agregar(Node nodo){
         //en caso de no tener nodo inicial se guarda el nodo como inicial
         if(this.head==null){
-            this.head=nodo;
+            setHead(nodo);
+            //this.head.setNext(null);
         }else{
-            //se crea un nodo temporal para ir recorriendo la lista sin modificarla
-            Node temp=this.head;
+            Node temp = new Node(this.head.getI(),this.head.getJ());//se crea un nodo temporal para ir recorriendo la lista sin modificarla
             //mienrtras el nodo tenga nodos consecuentes se sigue recorriendo la lista
             while(temp.getNext()!=null){
-                temp=temp.getNext();
+                temp = temp.getNext();
+                //System.out.println("mnl");
             }
             //al el nodo no tener un nodo siguiente se agrega el nodo del parametro como siguiente
             temp.setNext(nodo);
@@ -57,10 +64,11 @@ public class Lista {
     public void eliminar(Node nodo){
         //en caso de ser el nodo la cabeza de la lista, se cambia la cabeza por el nodo siguiente
         if(this.head==nodo){
-            this.head=nodo.getNext();
+            setHead(nodo.getNext());
         }else{
             //se crea un nodo temporal para recorrer la lista sin modificarla
-            Node temp=this.head;
+            //Node temp=this.head;
+            Node temp = new Node(this.head.getI(),this.head.getJ());
             //se recorre la lista mientras el nodo siguirente al temporal sea distinto al nodo del parametro
             while(temp.getNext()!=nodo){
                 temp=temp.getNext();
@@ -98,20 +106,20 @@ public class Lista {
     /**
      * Metodo para buscar un nodo aleatorio de la lista
      * @return nodo aleatorio de la lista
-     */
+     **/
     public Node buscarAleatorio(){
+        Random Rs = new Random();
         //posicion actual en la mina
-        int contador=0;
-        //posicion aleatoria a buscar en la lista
-        int b= (int)(Math.random()*this.tamaño);
-        //se genera un nodo temporal para recorrer la lista sin modificarla
-        Node temp=this.head;
-        //se aumenta la posicion actual de la lista hasta llegar a la posicion aleaoria
-        while(b!=contador){
-            temp=temp.getNext();
-            contador++;
+        //int contador=0;
+        //int t = Rs.nextInt(8); // Genera un número entre 0 y 7 (ambos inclusive)
+        //int t2 = Rs.nextInt(8); // Genera un número entre 0 y 7 (ambos inclusive)
+        int t=(int)(Math.random()*8);
+        int t2=(int)(Math.random()*8);
+        while(buscar(t,t2) == null) {
+            t=(int)(Math.random()*8);
+            t2=(int)(Math.random()*8);
         }
-        //retorna el nodo aleatorio que se busco
+        Node temp = new Node(t, t2);
         return temp;
     }
 
@@ -147,128 +155,3 @@ public class Lista {
         return this.tamaño;
     }
 }
-
-
-
-/*
-public class Lista {
-
-        public Node head;
-        private int size;
-
-        public Lista() {
-            this.head = null;
-            this.size = 0;
-
-        }
-
-        public boolean isEmpty() {
-            return this.head == null;
-
-        }
-
-    public void insertarLast(Tupla data){
-        Node node = new Node(data);
-        Node current; //= new Node(data);
-        if (Lista.this.size == 0) {
-            Lista.this.head = node;
-            current = Lista.this.head;
-            Lista.this.size++;
-        }
-        else {
-            current = Lista.this.head;
-            while (current.getNext() != null){
-                current.setNext(nodo);
-            }
-            current = node;
-            Lista.this.size++;
-            }
-        }
-
-
-
-    public void insertarLast(Tupla data) {
-        Node nodo = new Node(data);
-
-        if (this.head == null) {
-            this.head = nodo;
-        } else {
-            Node nodoActual = this.head;
-            while (nodoActual.getNext() != null) {
-                nodoActual = nodoActual.getNext();
-            }
-            nodoActual.setNext(nodo);
-        }
-        this.size++;
-    }
-
-
-
-
-
-
-
-        public Tupla getLast() {
-            Node current;
-            if (Lista.this.size == 0) {
-                return null;
-            } else {
-                current = Lista.this.head;
-                while (current.getNext() != null) {
-                    current.setNext();
-                }
-                return current.getData();
-            }
-        }
-
-
-
-
-
-    public Tupla getLast() {
-        if (head == null) {
-            // la lista está vacía, no hay último elemento
-            return null;
-        } else {
-            Node current = head;
-            while (current.getNext() != null) {
-                current = current.getNext();
-            }
-            return current.getData();
-        }
-    }
-
-
-
-        public int getSize(){
-            return this.size;
-        }
-
-
-    public void eliminarTodos() {
-        this.head = null;
-        this.size = 0;
-    }
-
-        public int[] getValues(){
-            int[] values = new int[Lista.this.size()];
-            Node current;
-            if (Lista.this.size == 0) {
-                return null;
-            }
-            else {
-                current = Lista.this.head;
-                while (current.getNext() != null){
-                    current.setNext();
-                }
-                for (int i = 0; i < Lista.this.size(); i++) {
-                    values[i] = current.getData();
-                }
-                return values;
-            }
-    }
-
-
-}
-
- */

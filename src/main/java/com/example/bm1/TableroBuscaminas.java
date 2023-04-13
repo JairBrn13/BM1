@@ -50,7 +50,7 @@ public class TableroBuscaminas {
 
 
     public Casilla[][] getCasillas(){
-        System.out.println(this.casillas+"");
+        //System.out.println(this.casillas+"");
         return this.casillas;
     }
 
@@ -87,7 +87,7 @@ public class TableroBuscaminas {
                 revelarCeldasSinPistas(fila + i, columna + j);
             }
         }
-        System.out.println("tambien entra aqui");
+        //System.out.println("tambien entra aqui");
 
     }
 

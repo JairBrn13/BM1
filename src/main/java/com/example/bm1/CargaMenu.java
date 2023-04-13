@@ -23,6 +23,9 @@ public class CargaMenu extends Application {
     Lista list_general = new Lista();
     Lista list_segura = new Lista();
     Lista list_incert = new Lista();
+
+
+    //Node node = new Node(0,0);
     @Override
     public void start(Stage primarystage) throws IOException, InterruptedException {
 
@@ -103,7 +106,7 @@ public class CargaMenu extends Application {
 
                         */
 
-                        Turnos2(Mbotones, tableroBuscaminas, turno, imagen, Rand);//, list_general, list_segura, list_incert);
+                        Turnos2(Mbotones, tableroBuscaminas, turno, Rand);//, list_general, list_segura, list_incert);
                     }
                 }
 
@@ -180,7 +183,7 @@ public class CargaMenu extends Application {
 
 
                         // Crea una variable para mantener el estado de la imagen en el botón
-                        Turnos(Mbotones, tableroBuscaminas, turno, imagen, Rand);
+                        Turnos(Mbotones, tableroBuscaminas, turno, Rand);
                     }
                 }
 
@@ -226,25 +229,25 @@ public class CargaMenu extends Application {
     }
 
 
-    public static void Turnos(Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, ImageView imagen, Random Rand) {
+    public static void Turnos(Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, Random Rand) {
         if (turno%2 == 0){
             //TurnosM(Mbotones, tableroBuscaminas, turno, imagen, Rand);
-            TurnosJ(Mbotones, tableroBuscaminas, turno, imagen, Rand);
+            TurnosJ(Mbotones, tableroBuscaminas, turno, Rand);
         }
         else {
             //TurnosJ(Mbotones, tableroBuscaminas, turno, imagen, Rand);
-            TurnosM(Mbotones, tableroBuscaminas, turno, imagen, Rand);
+            TurnosM(Mbotones, tableroBuscaminas, turno, Rand);
 
         }
     }
 
-    public void Turnos2(Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, ImageView imagen, Random Rand){//, Lista list_general, Lista list_segura, Lista list_incert) {
+    public void Turnos2(Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, Random Rand){//, Lista list_general, Lista list_segura, Lista list_incert) {
         if (turno%2 == 0){
             //TurnosMv2(Mbotones, tableroBuscaminas, turno, imagen, Rand, list_general, list_segura, list_incert);
-            TurnosJv2(Mbotones, tableroBuscaminas, turno, imagen, Rand);//, list_general, list_segura, list_incert);
+            TurnosJv2(Mbotones, tableroBuscaminas, turno, Rand);//, list_general, list_segura, list_incert);
         }
         else {
-            TurnosMv2(Mbotones, tableroBuscaminas, turno, imagen, Rand);//, list_general, list_segura, list_incert);
+            TurnosMv2(Mbotones, tableroBuscaminas, turno, Rand);//, list_general, list_segura, list_incert);
             //TurnosJv2(Mbotones, tableroBuscaminas, turno, imagen, Rand, list_general, list_segura, list_incert);
 
         }
@@ -261,47 +264,181 @@ public class CargaMenu extends Application {
     }
 
 
-    public void CasillasSeguras(/*Lista list_segura,*/ TableroBuscaminas tableroBuscaminas){
-        //list_segura.eliminarTodos();
-
-
+    public void CasillasSeguras(TableroBuscaminas tableroBuscaminas){
+        list_segura.eliminarLista();
+        System.out.println("si entra a las seguras");
+        /*Random Rs = new Random();
         for (int i = 0; i < this.list_general.getTamaño(); i++) {
-            if (!tableroBuscaminas.casillas[this.list_general.buscarAleatorio().getI()][this.list_general.buscarAleatorio().getJ()].isMina()){
-                 list_segura.agregar(this.list_general.buscarAleatorio());
+            int t = Rs.nextInt(8); // Genera un número entre 0 y 7 (ambos inclusive)
+            int t2 = Rs.nextInt(8); // Genera un número entre 0 y 7 (ambos inclusive)
+            while(this.list_general.buscar(t,t2) == null){
+                Rs = new Random();
+                t = Rs.nextInt(8);
+                t2 = Rs.nextInt(8);
+                try{
+                while (this.list_general.buscar(t,t2) == null&&!this.list_general.buscar(t, t2).getInListaS()) {
+                    Rs = new Random(); // Mueve la inicialización de Rs aquí
+                    t = Rs.nextInt(8);
+                    t2 = Rs.nextInt(8);
+                }
+                }catch (NullPointerException e){
+
+                }
+            }
+
+
+            System.out.println("este es t:" + t+"");
+            System.out.println("este es t2:" + t2+"");
+
+
+            if (!tableroBuscaminas.casillas[this.list_general.buscar(t,t2).getI()][this.list_general.buscar(t,t2).getJ()].isMina() && !this.list_general.buscar(t, t2).getInListaS()){
+                 list_segura.agregar(this.list_general.buscar(t,t2));
+                 this.list_general.buscar(t,t2).setInListaS();
              }
         }
+
+         */
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++) {//this.list_general.getTamaño(); i++) {
+                Node tmp = this.list_general.buscar(i,j);
+                System.out.println(i);
+                System.out.println(j);
+                if (this.list_general.buscar(i,j)!=null){
+                    System.out.println(tmp.getI());
+                    System.out.println(tmp.getJ());
+                    if (!tableroBuscaminas.casillas[tmp.getI()][tmp.getJ()].isMina() && !tmp.getInListaS()){
+                    list_segura.agregar(tmp);
+                    list_general.eliminar(tmp);
+                    tmp.setInListaS();
+                    }
+                }
+            }
+        }
         System.out.println(list_segura);
+        System.out.println(list_segura.getTamaño());
     }
 
-    public void CasillasIncert(/*Lista list_incert,*/ TableroBuscaminas tableroBuscaminas){
-        //list_incert.eliminarTodos();
-
+    public void CasillasIncert( TableroBuscaminas tableroBuscaminas){
+        list_incert.eliminarLista();
+        System.out.println("si entra a las incert");
+       /*
+        Random Ri = new Random(); // Mueve la inicialización de Ri aquí
         for (int i = 0; i < this.list_general.getTamaño(); i++) {
-            if (tableroBuscaminas.casillas[this.list_general.buscarAleatorio().getI()][this.list_general.buscarAleatorio().getJ()].isMina()){
-                list_incert.agregar(this.list_general.buscarAleatorio());
+            int ri = Ri.nextInt(8); // Actualiza el valor de ri en cada iteración
+            int ri2 = Ri.nextInt(8); // Actualiza el valor de ri2 en cada iteración
+            while (this.list_general.buscar(ri, ri2) == null) {
+                Ri = new Random();
+                ri = Ri.nextInt(8);
+                ri2 = Ri.nextInt(8);
+            }
+            System.out.println("este es t:" + ri + "");
+            System.out.println("este es t2:" + ri2 + "");
+            if (tableroBuscaminas.casillas[this.list_general.buscar(ri, ri2).getI()][this.list_general.buscar(ri, ri2).getJ()].isMina() && !this.list_general.buscar(ri, ri2).getInListaI()) {
+                list_incert.agregar(this.list_general.buscar(ri, ri2));
+                this.list_general.buscar(ri, ri2).setInListaI();
+            }
+        }
+
+        */
+        //System.out.println(this.list_general.getTamaño());
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++) {//this.list_general.getTamaño(); i++) {
+                System.out.println(i);
+                System.out.println(j);
+                Node tmp = this.list_general.buscar(i,j);
+                if (this.list_general.buscar(i,j)!=null){
+                    System.out.println(tmp.getI());
+                    System.out.println(tmp.getJ());
+                    if (tableroBuscaminas.casillas[tmp.getI()][tmp.getJ()].isMina() && !tmp.getInListaI()) {
+                        list_incert.agregar(tmp);
+                        tmp.setInListaI();
+                        list_general.eliminar(tmp);
+                    }
+                }
             }
         }
         System.out.println(list_incert);
+        System.out.println(list_incert.getTamaño());
     }
-
+/*
     public void CasillasTotales(TableroBuscaminas tableroBuscaminas){
-
+        Node node = new Node(0,0);
+        list_general.eliminarLista();
+        System.out.println("si entra a totales");
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (!tableroBuscaminas.casillas[i][j].isAbierta()){
-                    Node node = new Node(i, j);
+                    System.out.println("si entra a los for");
+                    node.setI(i);
+                    System.out.println("si entra a I ");
+                    node.setJ(j);
+                    System.out.println("si entra a J ");
                     list_general.agregar(node);
+                    System.out.println(list_general.buscar(i,j).getI());
+                    System.out.println(list_general.buscar(i,j).getJ());
+                    System.out.println(list_general.buscar(i,j).getNext());
+                    System.out.println("si hace los totales");
                 }
             }
         }
     }
 
-    public void TurnosMv2 (Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, ImageView imagen, Random Rand){
+ */
+
+
+
+    public void CasillasTotales(TableroBuscaminas tableroBuscaminas){
+        list_general.eliminarLista();
+        System.out.println("si entra a totales");
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (!tableroBuscaminas.casillas[i][j].isAbierta()){
+                    System.out.println("si entra a los for");
+                    Node node = new Node(i,j);
+                    System.out.println("si entra a I ");
+                    System.out.println(node.getI());
+                    System.out.println("si entra a J ");
+                    System.out.println(node.getJ());
+                    list_general.agregar(node);
+                    System.out.println("si hace los totales");
+                }
+            }
+        }
+    }
+
+
+    public void TurnosMv2 (Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, Random Rand){
+        System.out.println("si hace el turno M");
         CasillasTotales(tableroBuscaminas);
-       CasillasSeguras(tableroBuscaminas);
-        //System.out.println(lista_segura);
-        CasillasIncert(/*list_incert,*/ tableroBuscaminas);
-        ///System.out.println(lista_incert);
+        CasillasSeguras(tableroBuscaminas);
+        CasillasIncert(tableroBuscaminas);
+        System.out.println("si hace los metodos");
+        System.out.println(list_segura.getTamaño());
+        System.out.println(list_incert.getTamaño());
+
+       /*
+        int inc = (int)(Math.random()*8);
+        int inc2 = (int)(Math.random()*8);
+        if (list_incert.getTamaño()>0){
+        while(this.list_incert.buscar(inc,inc2)==null){
+            //System.out.println("inc entra");
+            inc = (int)(Math.random()*8);
+            inc2 = (int)(Math.random()*8);
+        }
+        }
+        System.out.println("inc sale");
+        if (list_segura.getTamaño()>0) {
+            int seg = (int) (Math.random() * 8);
+            int seg2 = (int) (Math.random() * 8);
+            while (this.list_segura.buscar(seg, seg2) == null) {
+                //System.out.println("seg entra");
+                seg = (int) (Math.random() * 8);
+                seg2 = (int) (Math.random() * 8);
+            }
+        }
+
+        System.out.println("seg sale");
+        */
         if(this.list_segura.getTamaño()==0 || tableroBuscaminas.casillas[this.list_incert.buscarAleatorio().getI()][this.list_incert.buscarAleatorio().getJ()].isAbierta() ){
             if (tableroBuscaminas.casillas[this.list_incert.buscarAleatorio().getI()][this.list_incert.buscarAleatorio().getJ()].isMina()) {
                 String mensaje;
@@ -310,6 +447,14 @@ public class CargaMenu extends Application {
                 Mbotones[this.list_incert.buscarAleatorio().getI()][this.list_incert.buscarAleatorio().getJ()].setText("X");
                 for (int k = 0; k < 8; k++) {
                     for (int l = 0; l < 8; l++) {
+                        if(tableroBuscaminas.casillas[k][l].isMina()){
+                            System.out.println("holaaa");
+                            Mbotones[k][l].setText("*");
+                        }
+                        else{
+                            System.out.println("gay");
+                            Mbotones[k][l].setText("xd");
+                        }
                         Mbotones[k][l].setDisable(true);
                     }
                 }
@@ -320,12 +465,12 @@ public class CargaMenu extends Application {
             tableroBuscaminas.casillas[this.list_segura.buscarAleatorio().getI()][this.list_segura.buscarAleatorio().getJ()].setAbierta();
             //Mbotones[valorAleatorio1][valorAleatorio2].setStyle("CB3234");
             //Mbotones[valorAleatorio1][valorAleatorio2].setText("X");
-            Mbotones[this.list_segura.buscarAleatorio().getI()][this.list_incert.buscarAleatorio().getI()].setDisable(true);
+            Mbotones[this.list_segura.buscarAleatorio().getI()][this.list_segura.buscarAleatorio().getJ()].setDisable(true);
             tableroBuscaminas.generarNumAdy();
             if (tableroBuscaminas.casillas[this.list_segura.buscarAleatorio().getI()][this.list_segura.buscarAleatorio().getJ()].getNumMinasAlrededor() != 0) {
                 tableroBuscaminas.casillas[this.list_segura.buscarAleatorio().getI()][this.list_segura.buscarAleatorio().getJ()].setText(tableroBuscaminas.casillas[this.list_segura.buscarAleatorio().getI()][this.list_segura.buscarAleatorio().getJ()].getNumMinasAlrededor() + "");
                 System.out.println("si entra al primero");
-                tableroBuscaminas.revelarCeldasSinPistas(this.list_segura.buscarAleatorio().getI(), this.list_segura.buscarAleatorio().getJ());
+                tableroBuscaminas.revelarCeldasSinPistas(this.list_segura.buscarAleatorio().getI(),this.list_segura.buscarAleatorio().getJ());
                 //Turnos(Mbotones, tableroBuscaminas, true, imagen, Rand);
                 System.out.println("si entra");
                 //tableroBuscaminas.revelarCeldasSinPistas(FilaA, ColumnaA);
@@ -336,11 +481,11 @@ public class CargaMenu extends Application {
             System.out.println("si sale");
             turno+=1;
             System.out.println(turno);
-            Turnos2(Mbotones, tableroBuscaminas, turno+1, imagen, Rand);//, list_general, list_segura, list_incert);
+            Turnos2(Mbotones, tableroBuscaminas, turno+1, Rand);//, list_general, list_segura, list_incert);
         }
     }
 
-    public void TurnosJv2(Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, ImageView imagen, Random Rand){//, Lista list_general, Lista list_segura, Lista list_incert) {
+    public void TurnosJv2(Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, Random Rand){//, Lista list_general, Lista list_segura, Lista list_incert) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 int fila = i;
@@ -373,7 +518,7 @@ public class CargaMenu extends Application {
                             }
                             tableroBuscaminas.revelarCeldasSinPistas(Fila, Columna);
                             System.out.println(turno + 1);
-                            Turnos2(Mbotones, tableroBuscaminas, turno+1, imagen, Rand);//, list_general, list_segura, list_incert);
+                            Turnos2(Mbotones, tableroBuscaminas, turno+1, Rand);//, list_general, list_segura, list_incert);
                         }
                     } else if (event.getButton() == MouseButton.SECONDARY) {
                         // Realizar acción para clic derecho
@@ -391,7 +536,7 @@ public class CargaMenu extends Application {
         }}
 
 
-    public static void TurnosM (Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, ImageView imagen, Random Rand) {
+    public static void TurnosM (Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, Random Rand) {
 
         int valorAleatorio1 = Rand.nextInt(8); // Genera un número entre 0 y 7 (ambos inclusive)
         int valorAleatorio2 = Rand.nextInt(8); // Genera un número entre 0 y 7 (ambos inclusive)
@@ -437,14 +582,14 @@ public class CargaMenu extends Application {
             System.out.println("si sale");
             turno+=1;
             System.out.println(turno);
-            Turnos(Mbotones, tableroBuscaminas, turno, imagen, Rand);
+            Turnos(Mbotones, tableroBuscaminas, turno, Rand);
         }
 
     }
 
 
 
-    public static void TurnosJ (Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, ImageView imagen, Random Rand) {
+    public static void TurnosJ (Button[][] Mbotones, TableroBuscaminas tableroBuscaminas, int turno, Random Rand) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 int fila = i;
@@ -477,7 +622,7 @@ public class CargaMenu extends Application {
                             }
                             tableroBuscaminas.revelarCeldasSinPistas(Fila, Columna);
                             System.out.println(turno + 1);
-                            Turnos(Mbotones, tableroBuscaminas, turno + 1, imagen, Rand);
+                            Turnos(Mbotones, tableroBuscaminas, turno + 1, Rand);
                         }
                     } else if (event.getButton() == MouseButton.SECONDARY) {
                         // Realizar acción para clic derecho

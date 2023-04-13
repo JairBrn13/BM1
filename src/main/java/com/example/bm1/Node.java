@@ -1,7 +1,5 @@
 package com.example.bm1;
 
-
-
 public class Node {
     //nodo siguiente
     private Node next;
@@ -11,7 +9,9 @@ public class Node {
     private int j;
     //estado si es completamente seguro para un humano saber si hay mina en la
     //casilla representada por el nodo
-    private boolean esMina;
+    private boolean isInListaS;
+    private boolean isInListaI;
+
 
     /**
      * Constructor de Objeto nodo
@@ -22,8 +22,9 @@ public class Node {
         this.i=i;
         this.j=j;
         //no tiene nodo siguiente ni se sabe si es mina
-        this.next= null;
-        this.esMina=false;
+        this.next = null;
+        this.isInListaS=false;
+        this.isInListaI=false;
     }
 
     /**
@@ -32,6 +33,8 @@ public class Node {
      */
     public void setNext(Node nodo){
         this.next=nodo;
+        //System.out.println(nodo.getI());
+        //System.out.println(nodo.getJ());
     }
 
     /**
@@ -54,7 +57,7 @@ public class Node {
      * Metodo que retorna el nodo siguiente
      * @return nodo siguiente
      */
-    public Node getNext(){
+    public Node getNext() {
         return this.next;
     }
 
@@ -74,18 +77,25 @@ public class Node {
         return this.j;
     }
 
-    /**
-     * Metodo que modifica el valor si es humanamente posible saber si es mina
-     */
-    public void setEsMina(){
-        this.esMina=true;
+    public void setInListaS(){
+        this.isInListaS = true;
+    }
+
+    public void setInListaI(){
+        this.isInListaI = true;
     }
 
     /**
      * Metodo que retorna si es humana mente posible saber si es mina
      * @return si es humana mente posible saber si es mina
      */
-    public boolean getEsMina(){
-        return this.esMina;
+    public boolean getInListaS(){
+        return this.isInListaS;
+    }
+
+    public boolean getInListaI(){
+        return this.isInListaI;
     }
 }
+
+

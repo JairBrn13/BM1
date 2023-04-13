@@ -58,51 +58,6 @@ public class Casilla  extends Button {
     public void setNumMinasAlrededor(int numMinasAlrededor) {
         this.numMinasAlrededor = numMinasAlrededor;
     }}
-/*
-    public void incrementarNumeroMinasAlrededor(){
-        this.numMinasAlrededor++;
-    }
 
-    public boolean isAbierta() {
-        return abierta;
-    }
-
-    public void setAbierta(boolean abierta) {
-        this.abierta = abierta;
-    }
-
-
-}
-
-/*
-import javafx.scene.control.Button;
-
-public class Casilla extends Button{
-    private Button boton;
-    private boolean esMina;
-
-    public Casilla() {
-        //this.boton = new Button();
-        this.esMina = false;
-    }
-
-    public Button getBoton() {
-        return this.boton;
-    }
-
-    public void setBoton(Button boton) {
-        this.boton = boton;
-    }
-
-    public boolean esMina() {
-        return this.esMina;
-    }
-
-    public void setMina(boolean esMina) {
-        this.esMina = esMina;
-    }
-}
-
-     */
 
 
