@@ -1,4 +1,4 @@
-package com.example.bm1;
+package com.example.proyecto_bm;
 
 import java.util.Random;
 
@@ -8,6 +8,7 @@ public class Lista {
     //nodo inicial de la lista
     private Node head;
 
+    
     /**
      * Constructor de la clase lista donde inicializa la estructura con tamaño 0 y sin
      * nodo inicial
@@ -29,8 +30,26 @@ public class Lista {
         //nodo inicial nulo
         this.head=null;
         //tamaño a 0 debido a que se vacio
-        this.tamaño=0;
+        setTamaño(0);
     }
+
+
+
+
+    public void eliminarTodos() {
+        head = null; // Eliminamos la referencia al primer nodo
+
+        // Recorremos la lista y eliminamos cada nodo
+        Node actual = head;
+        while (actual != null) {
+            Node siguiente = actual.getNext();
+            actual.setNext(null);
+            actual = siguiente;
+        }
+        setTamaño(0);
+    }
+
+
 
     /**
      * Metodo que permite agregar un nodo al final de la lista enlazada
@@ -44,7 +63,7 @@ public class Lista {
             setHead(nodo);
             //this.head.setNext(null);
         }else{
-            Node temp = new Node(this.head.getI(),this.head.getJ());//se crea un nodo temporal para ir recorriendo la lista sin modificarla
+            Node temp = this.head; //Node(this.head.getI(),this.head.getJ());//se crea un nodo temporal para ir recorriendo la lista sin modificarla
             //mienrtras el nodo tenga nodos consecuentes se sigue recorriendo la lista
             while(temp.getNext()!=null){
                 temp = temp.getNext();
@@ -52,6 +71,7 @@ public class Lista {
             }
             //al el nodo no tener un nodo siguiente se agrega el nodo del parametro como siguiente
             temp.setNext(nodo);
+            System.out.println(temp.getNext());
         }
         //se incrementa el tamaño de la lista
         this.tamaño++;
@@ -154,4 +174,9 @@ public class Lista {
     public int getTamaño(){
         return this.tamaño;
     }
+
+
+
+
 }
+
