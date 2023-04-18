@@ -1,4 +1,4 @@
-package com.example.bm1;
+package com.example.proyecto_bm;
 
 public class Node {
     //nodo siguiente
@@ -19,6 +19,7 @@ public class Node {
      * @param j, coordenada de columna del nodo
      */
     public Node(int i,int j){
+        System.out.println("q");
         this.i=i;
         this.j=j;
         //no tiene nodo siguiente ni se sabe si es mina
