@@ -1,4 +1,4 @@
-package com.example.bm1;
+package com.example.proyecto_bm;
 
 public class TableroBuscaminas {
     private static int filas;
@@ -35,7 +35,7 @@ public class TableroBuscaminas {
             int posTmpColumna=(int)(Math.random()*this.casillas[0].length);
             System.out.println(posTmpColumna+"" +","+ posTmpFila+"");
             if (!this.casillas[posTmpFila][posTmpColumna].isMina()){
-                this.casillas[posTmpFila][posTmpColumna].setMina(true);
+                this.casillas[posTmpFila][posTmpColumna].setMina();
                 System.out.println(minasGeneradas+"");
                 minasGeneradas++;
             }
@@ -59,25 +59,29 @@ public class TableroBuscaminas {
     public void revelarCeldasSinPistas(int fila, int columna){
 
         if (fila < 0 || columna < 0 || fila >= getFilas() || columna >= getColumnas()) {  //Si está fuera del tablero retorne nada
+            System.out.println("termina1");
             return;
         }
 
         if (casillas[fila][columna].isAbierta()) {  //Si la celda fue relevada salga de la ejecucion
+            System.out.println("termina2");
             return;
         }
 
         if (casillas[fila][columna].getNumMinasAlrededor() != 0) {  //Si la casilla tiene pistas, termine la ejecución
 
-            casillas[fila][columna].setText(casillas[fila][columna].getNumMinasAlrededor()+"");
-            casillas[fila][columna].setAbierta();
-            casillas[fila][columna].setDisable(true);
 
+            casillas[fila][columna].setAbierta();
+            casillas[fila][columna].setText(casillas[fila][columna].getNumMinasAlrededor()+"");
+            casillas[fila][columna].setDisable(true);
+            System.out.println("termina3");
             return;
         }
 
         casillas[fila][columna].setAbierta();  //Se marca la celda como revelada
-        casillas[fila][columna].setStyle("-fx-background-color: #6699CC");  //Se le asigna un color
+        casillas[fila][columna].setStyle("-fx-background-color: #FFFF00");  //Se le asigna un color
         casillas[fila][columna].setDisable(true);
+        System.out.println("termina4");
 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
@@ -156,8 +160,8 @@ public class TableroBuscaminas {
                     }
                     casillas[i][j].setNumMinasAlrededor(contador); // se asigna el contador a la variable numrev en la matriz de valores
                 }
-                else { // si el espacio es una mina
-                    casillas[i][j].setNumMinasAlrededor(-1); // se le asigna un -1 para representar que hay una mina
+                else if (casillas[i][j].isMina()){ // si el espacio es una mina
+                    casillas[i][j].setNumMinasAlrededor(-333); // se le asigna un -333 para representar que hay una mina
                 }
             }
         }
